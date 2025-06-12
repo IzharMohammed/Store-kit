@@ -87,7 +87,7 @@ export default function StorePageWrapper() {
           {
             method: "GET",
             headers: {
-              "x-api-key": Array.isArray(apikey) ? apikey[0] : apikey,
+              "x-store-slug": Array.isArray(apikey) ? apikey[0] : apikey,
             },
           }
         );
