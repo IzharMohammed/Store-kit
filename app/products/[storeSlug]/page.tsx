@@ -1,42 +1,3 @@
-// "use client";
-// import { useParams } from "next/navigation";
-// import { useEffect, useState } from "react";
-
-// export default function StorePage() {
-//   const [products, setProducts] = useState(null);
-//   const { apikey } = useParams();
-
-//   useEffect(() => {
-//     const fetchProducts = async () => {
-//       if (!apikey) return;
-
-//       const res = await fetch(
-//         "http://localhost:3000/api/trpc/storefront.products.getAll",
-//         {
-//           method: "GET",
-//           headers: {
-//             "x-api-key": Array.isArray(apikey) ? apikey[0] : apikey,
-//           },
-//         }
-//       );
-
-//       const data = await res.json();
-//       console.log("Fetched products:", data);
-//       setProducts(data);
-//     };
-
-//     fetchProducts();
-//   }, [apikey]);
-
-//   return (
-//     <div>
-//       <h1>Store Page</h1>
-//       <p>API Key: {apikey}</p>
-//       <pre>{JSON.stringify(products, null, 2)}</pre>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -51,6 +12,7 @@ import {
   Grid,
   List,
 } from "lucide-react";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -206,7 +168,7 @@ export default function StorePageWrapper() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">Store</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Store kit</h1>
               <div className="hidden md:block">
                 <nav className="flex space-x-8">
                   <a
@@ -215,12 +177,12 @@ export default function StorePageWrapper() {
                   >
                     Home
                   </a>
-                  <a
-                    href="#"
+                  <Link
+                    href={`/orders/${storeSlug}`}
                     className="text-gray-600 hover:text-gray-900 transition-colors"
                   >
-                    Products
-                  </a>
+                    orders
+                  </Link>
                   <a
                     href="#"
                     className="text-gray-600 hover:text-gray-900 transition-colors"
