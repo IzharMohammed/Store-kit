@@ -84,7 +84,8 @@ export default function StorePageWrapper() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { storeSlug } = useParams();
-  
+  console.log("storeSlug", storeSlug);
+
   useEffect(() => {
     const fetchProducts = async () => {
       if (!storeSlug) return;
@@ -102,8 +103,6 @@ export default function StorePageWrapper() {
             },
           }
         );
-        console.log("res",res);
-        
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }

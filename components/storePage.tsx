@@ -108,7 +108,7 @@ const StorePage = ({ data }: { data: StoreData }) => {
             </div>
 
             <select
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="px-4 py-2 border border-grayhttps://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&auto=format&fit=crop-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
