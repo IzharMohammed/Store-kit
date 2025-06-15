@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -45,6 +45,7 @@ export default function StorePageWrapper() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const router = useRouter();
   const { storeSlug } = useParams();
   console.log("storeSlug", storeSlug);
 
@@ -324,6 +325,9 @@ export default function StorePageWrapper() {
                 className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group ${
                   viewMode === "list" ? "flex items-center" : ""
                 }`}
+                onClick={() => {
+                  router.push(`${storeSlug}/${product.id}`);
+                }}
               >
                 <div
                   className={`relative bg-gray-100 ${
