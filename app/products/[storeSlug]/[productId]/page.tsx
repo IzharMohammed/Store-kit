@@ -37,64 +37,6 @@ export default function ProductsDetailPage() {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const { storeSlug, productId } = useParams();
 
-  // useEffect(() => {
-  //   const fetchProductDetails = async () => {
-  //     console.log("i am here");
-  //     if (!storeSlug || !productId) return;
-
-  //     try {
-  //       setLoading(true);
-
-  //       // const url = `http://localhost:3000/api/trpc/public.product.getById?batch=1&input=${encodeURIComponent(
-  //       //   JSON.stringify({ id: productId })
-  //       // )}`;
-
-  //       // const url = `http://localhost:3000/api/trpc/public.product.getById?batch=1&input=${encodeURIComponent(
-  //       //   JSON.stringify([{ id: productId }])
-  //       // )}`;
-
-  //       // const res = await fetch(url, {
-  //       //   method: "GET",
-  //       //   headers: {
-  //       //     "x-store-slug": Array.isArray(storeSlug) ? storeSlug[0] : storeSlug,
-  //       //     "x-product-id": Array.isArray(productId) ? productId[0] : productId,
-  //       //   },
-  //       //   // body: JSON.stringify({ id: productId }),
-  //       // });
-  //       const url = `http://localhost:3000/api/trpc/public.product.getById?input=${encodeURIComponent(
-  //         JSON.stringify({ id: productId })
-  //       )}`;
-  //       const res = await fetch(url, {
-  //         headers: {
-  //           "x-store-slug": Array.isArray(storeSlug) ? storeSlug[0] : storeSlug,
-  //           "x-product-id": Array.isArray(productId) ? productId[0] : productId,
-  //         },
-  //       });
-
-  //       console.log(res);
-  //       if (!res.ok) {
-  //         throw new Error(`HTTP error! status: ${res.status}`);
-  //       }
-
-  //       const data = await res.json();
-  //       console.log("Fetched product details: ", data);
-
-  //       if (data[0]?.result?.data?.json) {
-  //         setProductDetails(data[0].result.data.json);
-  //       } else {
-  //         throw new Error("Invalid data format");
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching product details", err);
-  //       setError(err instanceof Error ? err.message : "Unknown error occured");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchProductDetails();
-  // }, [productId, storeSlug]);
-
   useEffect(() => {
     const fetchProductDetails = async () => {
       if (!storeSlug || !productId) return;
