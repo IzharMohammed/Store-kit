@@ -12,6 +12,7 @@ import {
   Share,
   ArrowLeft,
 } from "lucide-react";
+import superjson from "superjson";
 
 interface ProductDetails {
   id: string;
@@ -36,44 +37,104 @@ export default function ProductsDetailPage() {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const { storeSlug, productId } = useParams();
 
+  // useEffect(() => {
+  //   const fetchProductDetails = async () => {
+  //     console.log("i am here");
+  //     if (!storeSlug || !productId) return;
+
+  //     try {
+  //       setLoading(true);
+
+  //       // const url = `http://localhost:3000/api/trpc/public.product.getById?batch=1&input=${encodeURIComponent(
+  //       //   JSON.stringify({ id: productId })
+  //       // )}`;
+
+  //       // const url = `http://localhost:3000/api/trpc/public.product.getById?batch=1&input=${encodeURIComponent(
+  //       //   JSON.stringify([{ id: productId }])
+  //       // )}`;
+
+  //       // const res = await fetch(url, {
+  //       //   method: "GET",
+  //       //   headers: {
+  //       //     "x-store-slug": Array.isArray(storeSlug) ? storeSlug[0] : storeSlug,
+  //       //     "x-product-id": Array.isArray(productId) ? productId[0] : productId,
+  //       //   },
+  //       //   // body: JSON.stringify({ id: productId }),
+  //       // });
+  //       const url = `http://localhost:3000/api/trpc/public.product.getById?input=${encodeURIComponent(
+  //         JSON.stringify({ id: productId })
+  //       )}`;
+  //       const res = await fetch(url, {
+  //         headers: {
+  //           "x-store-slug": Array.isArray(storeSlug) ? storeSlug[0] : storeSlug,
+  //           "x-product-id": Array.isArray(productId) ? productId[0] : productId,
+  //         },
+  //       });
+
+  //       console.log(res);
+  //       if (!res.ok) {
+  //         throw new Error(`HTTP error! status: ${res.status}`);
+  //       }
+
+  //       const data = await res.json();
+  //       console.log("Fetched product details: ", data);
+
+  //       if (data[0]?.result?.data?.json) {
+  //         setProductDetails(data[0].result.data.json);
+  //       } else {
+  //         throw new Error("Invalid data format");
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching product details", err);
+  //       setError(err instanceof Error ? err.message : "Unknown error occured");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProductDetails();
+  // }, [productId, storeSlug]);
+
   useEffect(() => {
     const fetchProductDetails = async () => {
-      console.log("i am here");
       if (!storeSlug || !productId) return;
 
       try {
         setLoading(true);
-        const res = await fetch(
-          "http://localhost:3000/api/trpc/public.product.getById",
-          {
-            method: "GET",
-            headers: {
-              "x-store-slug": Array.isArray(storeSlug)
-                ? storeSlug[0]
-                : storeSlug,
-              "x-product-id": Array.isArray(productId)
-                ? productId[0]
-                : productId,
-            },
-          }
-        );
+        const input = { id: productId };
+        // 2. Serialize with SuperJSON
+        const serialized = superjson.stringify(input);
 
-        console.log(res);
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        // 3. Make the request
+        const url = `http://localhost:3000/api/trpc/public.product.getById?input=${encodeURIComponent(
+          serialized
+        )}`;
 
-        const data = await res.json();
-        console.log("Fetched product details: ", data);
+        const res = await fetch(url, {
+          headers: {
+            "x-store-slug": Array.isArray(storeSlug) ? storeSlug[0] : storeSlug,
+            // "x-product-id": Array.isArray(productId) ? productId[0] : productId,
+            "Content-Type": "application/json",
+          },
+        });
 
-        if (data?.result?.data?.json) {
-          setProductDetails(data.result.data.json);
+        // 4. Deserialize the response
+        const rawData = await res.json();
+        const data = superjson.parse(JSON.stringify(rawData));
+
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        // const data = await res.json();
+        console.log("Full response:", rawData);
+
+        if (rawData?.result?.data?.json) {
+          setProductDetails(rawData.result.data.json);
         } else {
           throw new Error("Invalid data format");
         }
       } catch (err) {
         console.error("Error fetching product details", err);
-        setError(err instanceof Error ? err.message : "Unknown error occured");
+        setError(err instanceof Error ? err.message : "Unknown error occurred");
       } finally {
         setLoading(false);
       }
