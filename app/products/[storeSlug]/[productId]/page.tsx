@@ -1,74 +1,17 @@
-// "use client";
-// import { useParams } from "next/navigation";
-// import { useEffect, useState } from "react";
-
-// export default function ProductsDetailPage() {
-//   const [productDetails, setProductDetails] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const { storeSlug, productId } = useParams();
-
-//   useEffect(() => {
-//     const fetchProductDetails = async () => {
-//       console.log("i am here");
-//       if (!storeSlug || !productId) return;
-//       try {
-//         setLoading(true);
-
-//         const res = await fetch(
-//           "http://localhost:3000/api/trpc/public.product.getById",
-//           {
-//             method: "GET",
-//             headers: {
-//               "x-store-slug": Array.isArray(storeSlug)
-//                 ? storeSlug[0]
-//                 : storeSlug,
-//               "x-product-id": Array.isArray(productId)
-//                 ? productId[0]
-//                 : productId,
-//             },
-//           }
-//         );
-//         console.log(res);
-
-//         if (!res.ok) {
-//           throw new Error(`HTTP error! status: ${res.status}`);
-//         }
-
-//         const data = await res.json();
-//         console.log("Fetched product details: ", data);
-
-//         if (data?.result?.data?.json) {
-//           setProductDetails(data.result.data.json);
-//         } else {
-//           throw new Error("Invalid data format");
-//         }
-//       } catch (err) {
-//         console.error("Error fetching product details", err);
-//         setError(err instanceof Error ? err.message : "Unknown error occured");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProductDetails();
-//   }, [productId, storeSlug]);
-
-//   return (
-//     <div>
-//       <div>{`${productId} : ${storeSlug}`}</div>
-//       <div>{JSON.stringify(productDetails, null, 2)}</div>
-//     </div>
-//   );
-// }
-
-
 "use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Heart, ShoppingCart, Plus, Minus, Share, ArrowLeft } from "lucide-react";
+import {
+  Star,
+  Heart,
+  ShoppingCart,
+  Plus,
+  Minus,
+  Share,
+  ArrowLeft,
+} from "lucide-react";
 
 interface ProductDetails {
   id: string;
@@ -83,7 +26,9 @@ interface ProductDetails {
 }
 
 export default function ProductsDetailPage() {
-  const [productDetails, setProductDetails] = useState<ProductDetails | null>(null);
+  const [productDetails, setProductDetails] = useState<ProductDetails | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
@@ -95,7 +40,7 @@ export default function ProductsDetailPage() {
     const fetchProductDetails = async () => {
       console.log("i am here");
       if (!storeSlug || !productId) return;
-      
+
       try {
         setLoading(true);
         const res = await fetch(
@@ -112,15 +57,15 @@ export default function ProductsDetailPage() {
             },
           }
         );
-        
+
         console.log(res);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
-        
+
         const data = await res.json();
         console.log("Fetched product details: ", data);
-        
+
         if (data?.result?.data?.json) {
           setProductDetails(data.result.data.json);
         } else {
@@ -175,9 +120,11 @@ export default function ProductsDetailPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-red-600 text-2xl">⚠️</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Something went wrong</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Oops! Something went wrong
+          </h2>
           <p className="text-gray-600 mb-4">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
@@ -206,7 +153,7 @@ export default function ProductsDetailPage() {
   const productImages: string[] = [
     productDetails.image,
     productDetails.image,
-    productDetails.image
+    productDetails.image,
   ];
 
   return (
@@ -249,7 +196,7 @@ export default function ProductsDetailPage() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedImage(index)}
                     className={`relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4 ${
-                      selectedImage === index ? 'ring-2 ring-blue-500' : ''
+                      selectedImage === index ? "ring-2 ring-blue-500" : ""
                     }`}
                   >
                     <span className="sr-only">Image {index + 1}</span>
@@ -332,8 +279,12 @@ export default function ProductsDetailPage() {
               transition={{ delay: 0.6 }}
               className="mb-6"
             >
-              <p className="text-3xl font-bold text-gray-900">${productDetails.price}</p>
-              <p className="text-sm text-gray-600 mt-1">Free shipping on orders over $50</p>
+              <p className="text-3xl font-bold text-gray-900">
+                ${productDetails.price}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                Free shipping on orders over $50
+              </p>
             </motion.div>
 
             {/* Stock Status */}
@@ -346,7 +297,9 @@ export default function ProductsDetailPage() {
               {productDetails.inStock ? (
                 <div className="flex items-center text-green-600">
                   <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
-                  <span className="text-sm font-medium">In stock ({productDetails.stock} available)</span>
+                  <span className="text-sm font-medium">
+                    In stock ({productDetails.stock} available)
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center text-red-600">
@@ -363,8 +316,12 @@ export default function ProductsDetailPage() {
               transition={{ delay: 0.8 }}
               className="mb-8"
             >
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Description</h3>
-              <p className="text-gray-600 leading-relaxed">{productDetails.description}</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">
+                Description
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {productDetails.description}
+              </p>
             </motion.div>
 
             {/* Quantity Selector */}
@@ -374,7 +331,9 @@ export default function ProductsDetailPage() {
               transition={{ delay: 0.9 }}
               className="mb-8"
             >
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Quantity</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">
+                Quantity
+              </h3>
               <div className="flex items-center">
                 <button
                   onClick={() => handleQuantityChange(-1)}
@@ -383,7 +342,9 @@ export default function ProductsDetailPage() {
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="mx-4 text-lg font-medium w-12 text-center">{quantity}</span>
+                <span className="mx-4 text-lg font-medium w-12 text-center">
+                  {quantity}
+                </span>
                 <button
                   onClick={() => handleQuantityChange(1)}
                   disabled={quantity >= productDetails.stock}
@@ -411,18 +372,20 @@ export default function ProductsDetailPage() {
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
               </motion.button>
-              
+
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsFavorite(!isFavorite)}
                 className={`px-6 py-3 rounded-lg border-2 transition-colors flex items-center justify-center ${
                   isFavorite
-                    ? 'border-red-500 bg-red-50 text-red-600'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? "border-red-500 bg-red-50 text-red-600"
+                    : "border-gray-300 text-gray-700 hover:border-gray-400"
                 }`}
               >
-                <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
+                <Heart
+                  className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`}
+                />
               </motion.button>
             </motion.div>
 
