@@ -55,7 +55,7 @@ export default function StorePageWrapper() {
       try {
         setLoading(true);
         const res = await fetch(
-          "http://localhost:3000/api/trpc/storefront.products.getAll",
+          "http://localhost:3000/api/trpc/public.product.getAll",
           {
             method: "GET",
             headers: {
@@ -183,7 +183,7 @@ export default function StorePageWrapper() {
                   >
                     orders
                   </Link>
-                  <a
+                  {/* <a
                     href="#"
                     className="text-gray-600 hover:text-gray-900 transition-colors"
                   >
@@ -194,7 +194,7 @@ export default function StorePageWrapper() {
                     className="text-gray-600 hover:text-gray-900 transition-colors"
                   >
                     About
-                  </a>
+                  </a> */}
                 </nav>
               </div>
             </div>
